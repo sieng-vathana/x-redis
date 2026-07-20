@@ -11,11 +11,11 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.vyntra</groupId>
-	<artifactId>vyntra-redis</artifactId>
+	<groupId>com.x</groupId>
+	<artifactId>x-redis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>vyntra-redis</name>
-	<description>Shared Redis cache library for Vyntra microservices</description>
+	<name>x-redis</name>
+	<description>Shared Redis cache library for X microservices</description>
 
 	<properties>
 		<java.version>17</java.version>

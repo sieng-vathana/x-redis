@@ -1,8 +1,8 @@
-# vyntra-redis
+# x-redis
 
 Shared **Redis cache library** for Vyntra microservices.
 
-Use this to avoid hitting MySQL on every read. Domain services depend on this library; Redis itself runs as infrastructure (local Docker / K3s `redis` pod).
+Use this to avoid hitting MySQL on every read. Domain services depend on this library; Redis runs via Docker Compose (`./x.sh start`).
 
 ## What it provides
 
@@ -27,7 +27,7 @@ Client → Gateway → BFF → Product Service
 ### 1. Install the library locally (until published)
 
 ```bash
-cd vyntra-redis
+cd x-redis
 ./mvnw clean install -DskipTests
 ```
 
@@ -36,7 +36,7 @@ cd vyntra-redis
 ```xml
 <dependency>
   <groupId>com.vyntra</groupId>
-  <artifactId>vyntra-redis</artifactId>
+  <artifactId>x-redis</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
@@ -110,13 +110,13 @@ return redisCacheService.getOrLoad(
 ## Local Redis
 
 ```bash
-docker run -d --name vyntra-redis -p 6379:6379 redis:8-alpine
+docker run -d --name x-redis -p 6379:6379 redis:8-alpine
 ```
 
-K3s already ships a `redis` service (used by the API gateway rate limiter). Point services at:
+Local Compose Redis (default):
 
 ```text
-REDIS_HOST=redis
+REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 ```
 
