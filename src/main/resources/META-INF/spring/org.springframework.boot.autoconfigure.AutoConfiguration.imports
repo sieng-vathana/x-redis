@@ -1,1 +1,1 @@
-com.vyntra.redis.config.VyntraRedisAutoConfiguration
+com.x.redis.config.XRedisAutoConfiguration

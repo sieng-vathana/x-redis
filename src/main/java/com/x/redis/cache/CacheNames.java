@@ -1,4 +1,4 @@
-package com.vyntra.redis.cache;
+package com.x.redis.cache;
 
 /**
  * Shared Redis cache region names used across Vyntra services.

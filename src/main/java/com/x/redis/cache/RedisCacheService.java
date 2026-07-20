@@ -1,4 +1,4 @@
-package com.vyntra.redis.cache;
+package com.x.redis.cache;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.Nullable;
@@ -25,7 +25,7 @@ public class RedisCacheService {
             String keyPrefix,
             Duration defaultTtl) {
         this.redisTemplate = redisTemplate;
-        this.keyPrefix = keyPrefix == null || keyPrefix.isBlank() ? "vyntra" : keyPrefix;
+        this.keyPrefix = keyPrefix == null || keyPrefix.isBlank() ? "x" : keyPrefix;
         this.defaultTtl = defaultTtl == null ? Duration.ofMinutes(10) : defaultTtl;
     }
 

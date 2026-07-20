@@ -1,4 +1,4 @@
-package com.vyntra.redis.config;
+package com.x.redis.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -7,21 +7,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Tunable Redis cache settings for Vyntra services.
+ * Tunable Redis cache settings for X services.
  *
  * <pre>
- * vyntra:
+ * x:
  *   redis:
  *     enabled: true
- *     key-prefix: vyntra
+ *     key-prefix: x
  *     default-ttl: 10m
  *     caches:
  *       product-by-id: 15m
  *       products: 5m
  * </pre>
  */
-@ConfigurationProperties(prefix = "vyntra.redis")
-public class VyntraRedisProperties {
+@ConfigurationProperties(prefix = "x.redis")
+public class XRedisProperties {
 
     /**
      * Master switch. When false, Spring Cache falls back to no-op (no Redis required).
@@ -29,9 +29,9 @@ public class VyntraRedisProperties {
     private boolean enabled = true;
 
     /**
-     * Prefix applied to every cache key, e.g. {@code vyntra:product-by-id::42}.
+     * Prefix applied to every cache key, e.g. {@code x:product-by-id::42}.
      */
-    private String keyPrefix = "vyntra";
+    private String keyPrefix = "x";
 
     /**
      * Default TTL for cache regions that are not listed under {@link #caches}.
@@ -39,7 +39,7 @@ public class VyntraRedisProperties {
     private Duration defaultTtl = Duration.ofMinutes(10);
 
     /**
-     * Optional per-cache TTLs keyed by {@link com.vyntra.redis.cache.CacheNames} values.
+     * Optional per-cache TTLs keyed by {@link com.x.redis.cache.CacheNames} values.
      */
     private Map<String, Duration> caches = new HashMap<>();
 

@@ -8,10 +8,10 @@ Use this to avoid hitting MySQL on every read. Domain services depend on this li
 
 | Piece | Purpose |
 |-------|---------|
-| `VyntraRedisAutoConfiguration` | Auto-configures Redis `CacheManager` + `RedisTemplate` |
+| `XRedisAutoConfiguration` | Auto-configures Redis `CacheManager` + `RedisTemplate` |
 | `CacheNames` | Shared cache region names (`product-by-id`, `products`, …) |
 | `RedisCacheService` | Imperative get / put / evict / getOrLoad helper |
-| `vyntra.redis.*` properties | Enable flag, key prefix, default + per-cache TTLs |
+| `x.redis.*` properties | Enable flag, key prefix, default + per-cache TTLs |
 
 ## Request path with cache
 
@@ -71,7 +71,7 @@ vyntra:
 ### 4. Annotate service methods
 
 ```java
-import com.vyntra.redis.cache.CacheNames;
+import com.x.redis.cache.CacheNames;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;

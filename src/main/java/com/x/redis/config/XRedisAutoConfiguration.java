@@ -1,12 +1,12 @@
-package com.vyntra.redis.config;
+package com.x.redis.config;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.fasterxml.jackson.datatype.hibernate6.Hibernate6Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.vyntra.redis.cache.CacheNames;
-import com.vyntra.redis.cache.RedisCacheService;
+import com.x.redis.cache.CacheNames;
+import com.x.redis.cache.RedisCacheService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,19 +31,19 @@ import java.util.Map;
 /**
  * Auto-configures Redis-backed Spring Cache + a small {@link RedisCacheService} helper.
  *
- * <p>Activate in a service by depending on {@code com.vyntra:vyntra-redis} and setting
- * {@code spring.data.redis.host}/{@code port}. Disable with {@code vyntra.redis.enabled=false}.
+ * <p>Activate in a service by depending on {@code com.x:x-redis} and setting
+ * {@code spring.data.redis.host}/{@code port}. Disable with {@code x.redis.enabled=false}.
  */
 @AutoConfiguration(after = RedisAutoConfiguration.class)
 @EnableCaching
-@EnableConfigurationProperties(VyntraRedisProperties.class)
+@EnableConfigurationProperties(XRedisProperties.class)
 @ConditionalOnClass({RedisConnectionFactory.class, RedisCacheManager.class})
-@ConditionalOnProperty(prefix = "vyntra.redis", name = "enabled", havingValue = "true", matchIfMissing = true)
-public class VyntraRedisAutoConfiguration {
+@ConditionalOnProperty(prefix = "x.redis", name = "enabled", havingValue = "true", matchIfMissing = true)
+public class XRedisAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(name = "vyntraRedisTemplate")
-    public RedisTemplate<String, Object> vyntraRedisTemplate(RedisConnectionFactory connectionFactory) {
+    @ConditionalOnMissingBean(name = "xRedisTemplate")
+    public RedisTemplate<String, Object> xRedisTemplate(RedisConnectionFactory connectionFactory) {
         GenericJackson2JsonRedisSerializer jsonSerializer = jsonSerializer();
 
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -60,7 +60,7 @@ public class VyntraRedisAutoConfiguration {
     @ConditionalOnMissingBean
     public CacheManager cacheManager(
             RedisConnectionFactory connectionFactory,
-            VyntraRedisProperties properties) {
+            XRedisProperties properties) {
         GenericJackson2JsonRedisSerializer jsonSerializer = jsonSerializer();
 
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
@@ -93,9 +93,9 @@ public class VyntraRedisAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public RedisCacheService redisCacheService(
-            RedisTemplate<String, Object> vyntraRedisTemplate,
-            VyntraRedisProperties properties) {
-        return new RedisCacheService(vyntraRedisTemplate, properties.getKeyPrefix(), properties.getDefaultTtl());
+            RedisTemplate<String, Object> xRedisTemplate,
+            XRedisProperties properties) {
+        return new RedisCacheService(xRedisTemplate, properties.getKeyPrefix(), properties.getDefaultTtl());
     }
 
     private static GenericJackson2JsonRedisSerializer jsonSerializer() {
@@ -118,7 +118,7 @@ public class VyntraRedisAutoConfiguration {
             Map<String, RedisCacheConfiguration> map,
             RedisCacheConfiguration defaults,
             String cacheName,
-            VyntraRedisProperties properties) {
+            XRedisProperties properties) {
         Duration ttl = properties.getCaches().getOrDefault(cacheName, properties.getDefaultTtl());
         map.put(cacheName, defaults.entryTtl(ttl));
     }

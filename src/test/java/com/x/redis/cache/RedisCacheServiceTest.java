@@ -1,4 +1,4 @@
-package com.vyntra.redis.cache;
+package com.x.redis.cache;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,9 +24,9 @@ class RedisCacheServiceTest {
     void keyUsesPrefixAndCacheName() {
         @SuppressWarnings("unchecked")
         RedisTemplate<String, Object> template = mock(RedisTemplate.class);
-        RedisCacheService service = new RedisCacheService(template, "vyntra", Duration.ofMinutes(5));
+        RedisCacheService service = new RedisCacheService(template, "x", Duration.ofMinutes(5));
 
-        assertEquals("vyntra:product-by-id:42", service.key(CacheNames.PRODUCT_BY_ID, 42L));
+        assertEquals("x:product-by-id:42", service.key(CacheNames.PRODUCT_BY_ID, 42L));
     }
 
     @Test
@@ -36,9 +36,9 @@ class RedisCacheServiceTest {
         @SuppressWarnings("unchecked")
         ValueOperations<String, Object> ops = mock(ValueOperations.class);
         when(template.opsForValue()).thenReturn(ops);
-        when(ops.get("vyntra:product-by-id:1")).thenReturn("cached-product");
+        when(ops.get("x:product-by-id:1")).thenReturn("cached-product");
 
-        RedisCacheService service = new RedisCacheService(template, "vyntra", Duration.ofMinutes(5));
+        RedisCacheService service = new RedisCacheService(template, "x", Duration.ofMinutes(5));
         AtomicInteger loads = new AtomicInteger();
 
         String result = service.getOrLoad(
@@ -62,14 +62,14 @@ class RedisCacheServiceTest {
         @SuppressWarnings("unchecked")
         ValueOperations<String, Object> ops = mock(ValueOperations.class);
         when(template.opsForValue()).thenReturn(ops);
-        when(ops.get("vyntra:product-by-id:2")).thenReturn(null);
+        when(ops.get("x:product-by-id:2")).thenReturn(null);
 
-        RedisCacheService service = new RedisCacheService(template, "vyntra", Duration.ofMinutes(5));
+        RedisCacheService service = new RedisCacheService(template, "x", Duration.ofMinutes(5));
 
         String result = service.getOrLoad(CacheNames.PRODUCT_BY_ID, 2L, String.class, () -> "fresh");
 
         assertEquals("fresh", result);
-        verify(ops).set(eq("vyntra:product-by-id:2"), eq("fresh"), eq(Duration.ofMinutes(5).toMillis()), any());
+        verify(ops).set(eq("x:product-by-id:2"), eq("fresh"), eq(Duration.ofMinutes(5).toMillis()), any());
     }
 
     @Test
@@ -79,9 +79,9 @@ class RedisCacheServiceTest {
         @SuppressWarnings("unchecked")
         ValueOperations<String, Object> ops = mock(ValueOperations.class);
         when(template.opsForValue()).thenReturn(ops);
-        when(ops.get("vyntra:products:all")).thenReturn(null);
+        when(ops.get("x:products:all")).thenReturn(null);
 
-        RedisCacheService service = new RedisCacheService(template, "vyntra", Duration.ofMinutes(5));
+        RedisCacheService service = new RedisCacheService(template, "x", Duration.ofMinutes(5));
         Optional<String> value = service.get(CacheNames.PRODUCTS, "all", String.class);
 
         assertTrue(value.isEmpty());
