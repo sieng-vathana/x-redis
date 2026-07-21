@@ -14,8 +14,30 @@
 	<groupId>com.x</groupId>
 	<artifactId>x-redis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>x-redis</name>
-	<description>x-redis</description>
+	<description>Redis cache library for X platform services</description>
+	<url>https://github.com/VathanaProgrammer/x-redis</url>
+
+	<scm>
+		<connection>scm:git:https://github.com/VathanaProgrammer/x-redis.git</connection>
+		<developerConnection>scm:git:https://github.com/VathanaProgrammer/x-redis.git</developerConnection>
+		<url>https://github.com/VathanaProgrammer/x-redis</url>
+	</scm>
+
+	<!-- Publish: mvn -s maven/settings-github.xml deploy  (or scripts/deploy-shared-libs.sh) -->
+	<distributionManagement>
+		<repository>
+			<id>github-x-redis</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/VathanaProgrammer/x-redis</url>
+		</repository>
+		<snapshotRepository>
+			<id>github-x-redis</id>
+			<name>GitHub Packages Snapshots</name>
+			<url>https://maven.pkg.github.com/VathanaProgrammer/x-redis</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<properties>
 		<java.version>17</java.version>
