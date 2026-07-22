@@ -1,7 +1,7 @@
 package com.x.redis.cache;
 
 /**
- * Shared Redis cache region names used across Vyntra services.
+ * Shared Redis cache region names used across X services.
  * Keep keys stable — renaming invalidates all existing entries.
  */
 public final class CacheNames {
