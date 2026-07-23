@@ -77,8 +77,8 @@ public class XRedisAutoConfiguration {
         register(perCache, defaults, CacheNames.PRODUCT_BY_ID, properties);
         register(perCache, defaults, CacheNames.USER_BY_USERNAME, properties);
         register(perCache, defaults, CacheNames.BUSINESS_BY_ID, properties);
-        register(perCache, defaults, CacheNames.SHOP_BY_ID, properties);
-        register(perCache, defaults, CacheNames.SHOPS_BY_BUSINESS, properties);
+        register(perCache, defaults, CacheNames.STORE_BY_ID, properties);
+        register(perCache, defaults, CacheNames.STORES_BY_BUSINESS, properties);
 
         properties.getCaches().forEach((name, ttl) ->
                 perCache.putIfAbsent(name, defaults.entryTtl(ttl != null ? ttl : properties.getDefaultTtl())));
