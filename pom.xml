@@ -30,12 +30,12 @@
 		<repository>
 			<id>github-x-redis</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/VathanaProgrammer/x-redis</url>
+			<url>https://maven.pkg.github.com/sieng-vathana/x-redis</url>
 		</repository>
 		<snapshotRepository>
 			<id>github-x-redis</id>
 			<name>GitHub Packages Snapshots</name>
-			<url>https://maven.pkg.github.com/VathanaProgrammer/x-redis</url>
+			<url>https://maven.pkg.github.com/sieng-vathana/x-redis</url>
 		</snapshotRepository>
 	</distributionManagement>
 
