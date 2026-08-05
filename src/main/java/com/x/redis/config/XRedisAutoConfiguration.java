@@ -109,7 +109,7 @@ public class XRedisAutoConfiguration {
         return new RedisCacheService(xRedisTemplate, properties.getKeyPrefix(), properties.getDefaultTtl());
     }
 
-    private static GenericJackson2JsonRedisSerializer jsonSerializer() {
+    static GenericJackson2JsonRedisSerializer jsonSerializer() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
@@ -120,7 +120,7 @@ public class XRedisAutoConfiguration {
 
         mapper.activateDefaultTyping(
                 LaissezFaireSubTypeValidator.instance,
-                ObjectMapper.DefaultTyping.NON_FINAL,
+                ObjectMapper.DefaultTyping.EVERYTHING,
                 JsonTypeInfo.As.PROPERTY);
         return new GenericJackson2JsonRedisSerializer(mapper);
     }

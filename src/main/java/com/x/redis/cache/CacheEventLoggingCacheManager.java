@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.lang.Nullable;
 
 import java.util.Collection;
@@ -84,17 +85,27 @@ public final class CacheEventLoggingCacheManager implements CacheManager {
         @Override
         @Nullable
         public ValueWrapper get(Object key) {
-            ValueWrapper value = cache.get(key);
-            log(getName(), value == null ? "MISS" : "HIT");
-            return value;
+            try {
+                ValueWrapper value = cache.get(key);
+                log(getName(), value == null ? "MISS" : "HIT");
+                return value;
+            } catch (SerializationException exception) {
+                evictUnreadableEntry(key, exception);
+                return null;
+            }
         }
 
         @Override
         @Nullable
         public <T> T get(Object key, @Nullable Class<T> type) {
-            T value = cache.get(key, type);
-            log(getName(), value == null ? "MISS" : "HIT");
-            return value;
+            try {
+                T value = cache.get(key, type);
+                log(getName(), value == null ? "MISS" : "HIT");
+                return value;
+            } catch (SerializationException exception) {
+                evictUnreadableEntry(key, exception);
+                return null;
+            }
         }
 
         @Override
@@ -179,6 +190,18 @@ public final class CacheEventLoggingCacheManager implements CacheManager {
                 log(getName(), "EVICT_ALL");
             }
             return invalidated;
+        }
+
+        private void evictUnreadableEntry(Object key, SerializationException exception) {
+            cache.evict(key);
+            String correlationId = MDC.get(CORRELATION_ID_MDC_KEY);
+            EVENT_LOG.warn(
+                    "★★★ CACHE-EVENT ★★★ service={} cache={} result=CORRUPT_EVICTED correlationId={} reason={}",
+                    serviceName,
+                    getName(),
+                    correlationId == null || correlationId.isBlank() ? "-" : correlationId,
+                    exception.getClass().getSimpleName());
+            log(getName(), "RECOVERED_MISS");
         }
     }
 }
