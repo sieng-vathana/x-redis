@@ -1,5 +1,6 @@
 package com.x.redis.config;
 
+import com.x.redis.cache.CacheNames;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
@@ -38,10 +39,13 @@ public class XRedisProperties {
      */
     private Duration defaultTtl = Duration.ofMinutes(10);
 
+    /** Emit structured HIT/MISS/EVICT events without logging cache keys. */
+    private boolean logEvents = true;
+
     /**
      * Optional per-cache TTLs keyed by {@link com.x.redis.cache.CacheNames} values.
      */
-    private Map<String, Duration> caches = new HashMap<>();
+    private Map<String, Duration> caches = recommendedCacheTtls();
 
     public boolean isEnabled() {
         return enabled;
@@ -67,11 +71,31 @@ public class XRedisProperties {
         this.defaultTtl = defaultTtl;
     }
 
+    public boolean isLogEvents() {
+        return logEvents;
+    }
+
+    public void setLogEvents(boolean logEvents) {
+        this.logEvents = logEvents;
+    }
+
     public Map<String, Duration> getCaches() {
         return caches;
     }
 
     public void setCaches(Map<String, Duration> caches) {
-        this.caches = caches != null ? caches : new HashMap<>();
+        Map<String, Duration> merged = recommendedCacheTtls();
+        if (caches != null) {
+            merged.putAll(caches);
+        }
+        this.caches = merged;
+    }
+
+    private static Map<String, Duration> recommendedCacheTtls() {
+        Map<String, Duration> defaults = new HashMap<>();
+        defaults.put(CacheNames.BUSINESSES_BY_OWNER, Duration.ofMinutes(30));
+        defaults.put(CacheNames.STORES_BY_BUSINESS, Duration.ofMinutes(15));
+        defaults.put(CacheNames.STORAGE_FILE_BY_RELATIVE_PATH, Duration.ofMinutes(15));
+        return defaults;
     }
 }

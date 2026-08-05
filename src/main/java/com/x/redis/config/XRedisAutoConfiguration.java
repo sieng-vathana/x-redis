@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import com.fasterxml.jackson.datatype.hibernate6.Hibernate6Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.x.redis.cache.CacheNames;
+import com.x.redis.cache.CacheEventLoggingCacheManager;
 import com.x.redis.cache.RedisCacheService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -16,6 +17,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -60,7 +62,8 @@ public class XRedisAutoConfiguration {
     @ConditionalOnMissingBean
     public CacheManager cacheManager(
             RedisConnectionFactory connectionFactory,
-            XRedisProperties properties) {
+            XRedisProperties properties,
+            Environment environment) {
         GenericJackson2JsonRedisSerializer jsonSerializer = jsonSerializer();
 
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
@@ -77,17 +80,25 @@ public class XRedisAutoConfiguration {
         register(perCache, defaults, CacheNames.PRODUCT_BY_ID, properties);
         register(perCache, defaults, CacheNames.USER_BY_USERNAME, properties);
         register(perCache, defaults, CacheNames.BUSINESS_BY_ID, properties);
+        register(perCache, defaults, CacheNames.BUSINESSES_BY_OWNER, properties);
         register(perCache, defaults, CacheNames.STORE_BY_ID, properties);
         register(perCache, defaults, CacheNames.STORES_BY_BUSINESS, properties);
+        register(perCache, defaults, CacheNames.STORAGE_FILE_BY_RELATIVE_PATH, properties);
 
         properties.getCaches().forEach((name, ttl) ->
                 perCache.putIfAbsent(name, defaults.entryTtl(ttl != null ? ttl : properties.getDefaultTtl())));
 
-        return RedisCacheManager.builder(connectionFactory)
+        CacheManager redisCacheManager = RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(defaults)
                 .withInitialCacheConfigurations(perCache)
                 .transactionAware()
                 .build();
+        if (!properties.isLogEvents()) {
+            return redisCacheManager;
+        }
+        return new CacheEventLoggingCacheManager(
+                redisCacheManager,
+                environment.getProperty("spring.application.name", "unknown"));
     }
 
     @Bean

@@ -18,11 +18,17 @@ public final class CacheNames {
     /** Business by id. */
     public static final String BUSINESS_BY_ID = "business-by-id";
 
+    /** Businesses listed by owner user id. */
+    public static final String BUSINESSES_BY_OWNER = "businesses-by-owner";
+
     /** Stores listed by business id. */
     public static final String STORES_BY_BUSINESS = "stores-by-business";
 
     /** Single store by id. */
     public static final String STORE_BY_ID = "store-by-id";
+
+    /** Storage metadata (including the resolved URL) by relative object path. */
+    public static final String STORAGE_FILE_BY_RELATIVE_PATH = "storage-file-by-relative-path";
 
     private CacheNames() {
     }
