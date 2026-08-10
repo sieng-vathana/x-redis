@@ -30,6 +30,9 @@ public final class CacheNames {
     /** Storage metadata (including the resolved URL) by relative object path. */
     public static final String STORAGE_FILE_BY_RELATIVE_PATH = "storage-file-by-relative-path";
 
+    /** Authenticated marketplace favorites and cart summary by user id. */
+    public static final String MARKETPLACE_USER_SUMMARY = "marketplace-user-summary";
+
     private CacheNames() {
     }
 }

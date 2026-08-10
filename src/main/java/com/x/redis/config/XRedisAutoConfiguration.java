@@ -84,6 +84,7 @@ public class XRedisAutoConfiguration {
         register(perCache, defaults, CacheNames.STORE_BY_ID, properties);
         register(perCache, defaults, CacheNames.STORES_BY_BUSINESS, properties);
         register(perCache, defaults, CacheNames.STORAGE_FILE_BY_RELATIVE_PATH, properties);
+        register(perCache, defaults, CacheNames.MARKETPLACE_USER_SUMMARY, properties);
 
         properties.getCaches().forEach((name, ttl) ->
                 perCache.putIfAbsent(name, defaults.entryTtl(ttl != null ? ttl : properties.getDefaultTtl())));

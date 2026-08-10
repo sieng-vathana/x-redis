@@ -96,6 +96,7 @@ public class XRedisProperties {
         defaults.put(CacheNames.BUSINESSES_BY_OWNER, Duration.ofMinutes(30));
         defaults.put(CacheNames.STORES_BY_BUSINESS, Duration.ofMinutes(15));
         defaults.put(CacheNames.STORAGE_FILE_BY_RELATIVE_PATH, Duration.ofMinutes(15));
+        defaults.put(CacheNames.MARKETPLACE_USER_SUMMARY, Duration.ofMinutes(2));
         return defaults;
     }
 }
