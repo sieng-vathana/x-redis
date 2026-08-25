@@ -12,6 +12,15 @@ public final class CacheNames {
     /** Single product by id. */
     public static final String PRODUCT_BY_ID = "product-by-id";
 
+    /** Product option types listed for a business. */
+    public static final String PRODUCT_ATTRIBUTES = "product-attributes";
+
+    /** Single product option type by id. */
+    public static final String PRODUCT_ATTRIBUTE_BY_ID = "product-attribute-by-id";
+
+    /** Values belonging to a product option type. */
+    public static final String PRODUCT_ATTRIBUTE_VALUES = "product-attribute-values";
+
     /** Auth/user lookup by username (for BFF / user-service). */
     public static final String USER_BY_USERNAME = "user-by-username";
 
